@@ -1,4 +1,4 @@
-import React,{useEffect,useMemo,useState} from 'react';import{createRoot}from'react-dom/client';import'./styles.css';
+import React,{useEffect,useMemo,useState} from 'react';import{createRoot}from'react-dom/client';import'./styles.css';import'./premium.css';import'./transportPanel';
 type Place={name:string;detail:string;map?:string;official?:string;image?:string;optional?:boolean};type Day={id:string;date:string;city:string;title:string;summary:string;image:string;places:Place[];travel?:string;notes?:string[];schedule?:string[]};
 const map=(q:string)=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 const img=(file:string)=>`https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=1200`;
