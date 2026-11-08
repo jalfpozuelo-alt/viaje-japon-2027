@@ -30,6 +30,14 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
     const currentDefault = defaultTrip.days.find(item => item.id === day.id);
     if (!currentDefault) return day;
     let next = day;
+    if (!next.guideSteps && currentDefault.guideSteps) {
+      next = { ...next, guideSteps: currentDefault.guideSteps };
+      changed = true;
+    }
+    if (!next.foodTips && currentDefault.foodTips) {
+      next = { ...next, foodTips: currentDefault.foodTips };
+      changed = true;
+    }
     const oldFiles = legacy[day.id] || [];
     if (oldFiles.some(file => day.image.includes(encodeURIComponent(file)))) {
       next = { ...next, image: currentDefault.image };
@@ -74,7 +82,10 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
     }
     return next;
   });
-  return changed ? { ...trip, days } : trip;
+  const preparation = trip.preparation === undefined ? defaultTrip.preparation : trip.preparation;
+  const manners = trip.manners === undefined ? defaultTrip.manners : trip.manners;
+  if (preparation !== trip.preparation || manners !== trip.manners) changed = true;
+  return changed ? { ...trip, days, preparation, manners } : trip;
 }
 
 export function useTrip() {
