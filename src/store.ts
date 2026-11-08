@@ -104,4 +104,3 @@ export function useTrip() {
 }
 
 export const stamp = (trip: Trip): Trip => ({ ...trip, updatedAt: new Date().toISOString() });
-

@@ -31,4 +31,3 @@ export const defaultTrip:Trip={schemaVersion:1,title:'Japón · 2027',subtitle:'
 
 
 
-
