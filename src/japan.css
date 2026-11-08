@@ -72,3 +72,33 @@
 .pass-window p:not(.eyebrow){font-size:14px;line-height:1.65;color:#e3e5dd;margin:8px 0}
 .pass-window a{color:#f0c2a7}
 @media(min-width:760px){.japan-route-map{max-width:760px;margin-left:auto;margin-right:auto;padding:24px}.route-day-pins button{width:34px;height:34px}.route-city-label{font-size:12px}}
+
+/* Atlas editorial: itinerary rail beside an uncluttered geographic map */
+.japan-route-map{padding:17px 13px 15px}
+.route-layout{display:grid;grid-template-columns:minmax(132px,42%) minmax(0,1fr);align-items:center;gap:7px}
+.route-day-list{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.route-day-group{display:grid;grid-template-columns:25px minmax(0,1fr);align-items:center;gap:7px;padding:9px 0;border-bottom:1px solid #dcd7cc}
+.route-day-group:last-child{border-bottom:0}
+.route-stage-number,.route-map-point{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#a63128;color:#fff;font-size:11px;font-weight:800;box-shadow:0 1px 4px #20251f20}
+.route-day-copy{min-width:0}
+.route-day-copy>b{display:block;margin-bottom:5px;color:#293d3e;font-size:13px;line-height:1.2}
+.route-day-buttons{display:flex;flex-wrap:wrap;gap:4px}
+.route-day-buttons button{width:28px;height:28px;min-width:28px;padding:0;border:1px solid #d4ccbf;border-radius:50%;background:#fffdf8;color:#a63128;font-size:10px;font-weight:800;cursor:pointer;touch-action:manipulation}
+.route-day-buttons button:active{background:#a63128;color:white;transform:scale(.95)}
+.route-map-art{width:100%;aspect-ratio:1187/1342;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse at 54% 54%,#faf8f2,#e9e6dc 72%)}
+.route-map-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.82;filter:sepia(.12) saturate(.65)}
+.route-stage-pin,.route-city-label,.route-day-pins{display:none}
+.route-map-point{position:absolute;z-index:2;transform:translate(-50%,-50%);width:23px;height:23px;border:2px solid #fff;background:#a63128;font-size:10px;box-shadow:0 1px 5px #2228}
+.route-trajectory{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible}
+.route-trajectory path{fill:none;stroke:#ad3930;stroke-width:.5;stroke-dasharray:1.3 1.1;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.route-trajectory marker path{fill:#ad3930;stroke:none}
+.map-controls{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:13px}
+.map-controls .map-caption{margin:0;font-size:9px}
+.map-controls button{flex:none;border:1px solid #d5cec1;border-radius:99px;background:#fffdf8;color:#405251;padding:8px 11px;font-size:12px;font-weight:700;touch-action:manipulation}
+.japan-route-map>.map-note{margin-top:9px}
+.japan-route-map.map-large .route-layout{grid-template-columns:1fr}
+.japan-route-map.map-large .route-day-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}
+.japan-route-map.map-large .route-map-art{width:min(100%,460px);height:min(68vh,620px);aspect-ratio:auto;margin:0 auto}
+.japan-route-map.map-large .route-map-art>img{object-fit:contain}
+@media(max-width:360px){.route-layout{grid-template-columns:minmax(122px,44%) minmax(0,1fr);gap:4px}.route-day-group{gap:5px}.route-day-buttons{gap:3px}.route-day-buttons button{width:26px;height:26px;min-width:26px}}
+@media(min-width:760px){.japan-route-map{max-width:900px;padding:24px}.route-layout{grid-template-columns:310px minmax(0,1fr);gap:20px}.route-day-group{padding:13px 0;grid-template-columns:32px 1fr}.route-stage-number{width:30px;height:30px;font-size:13px}.route-day-copy>b{font-size:15px}.route-day-buttons button{width:35px;height:35px;min-width:35px;font-size:12px}.route-map-art{max-height:620px}.route-map-point{width:29px;height:29px;font-size:12px}}
