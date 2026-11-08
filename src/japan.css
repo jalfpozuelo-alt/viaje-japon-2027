@@ -2,4 +2,7 @@
 .cover{min-height:520px;background-position:center 38%;border-radius:28px}.cover:before{background:linear-gradient(0deg,rgba(8,20,26,.88),rgba(11,29,35,.08) 78%),linear-gradient(90deg,rgba(134,40,34,.16),transparent 58%)}.cover p{font-family:'Noto Serif JP',serif;font-size:13px;letter-spacing:.18em;color:#f4dba8}.cover h1{font-family:'Shippori Mincho','Noto Serif JP',serif;font-size:clamp(38px,10vw,54px);line-height:1.12;letter-spacing:.01em}.cover span{font:500 11px 'Noto Serif JP',serif;letter-spacing:.06em}.stamp{font-family:'Noto Serif JP',serif}.hero{background-position:center 42%}.hero:before{background:linear-gradient(0deg,rgba(9,24,33,.87),rgba(17,33,43,.02) 85%)}
 
 .cover{background-color:#27494c}.hero{background-color:#27494c}.cover:after{content:'富士山';position:absolute;right:18px;top:14px;font:500 18px 'Noto Serif JP',serif;letter-spacing:.22em;color:#fff8e6;writing-mode:vertical-rl;text-shadow:0 2px 8px #0008;z-index:1}
+.cover h1{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.day-notes{margin:0;padding-left:1.2rem;color:#586a75}.day-notes li{padding:10px 4px}.day-notes li+li{border-top:1px solid #dfe5e3}
+.day-transport-list .travel{margin-top:12px}.day-transport-list .travel .transport-route{font-weight:700;color:#24434b}.day-transport-list .travel a{color:#1f6f7a;font-size:13px;font-weight:700}
 
