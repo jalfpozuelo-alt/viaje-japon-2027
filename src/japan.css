@@ -49,10 +49,18 @@
 .route-day-pins{display:flex;gap:3px;flex-wrap:nowrap}
 .route-day-pins button{width:30px;height:30px;min-width:30px;padding:0;border:2px solid #fff;border-radius:50%;background:#a63128;color:white;font-size:12px;font-weight:750;box-shadow:0 2px 8px #20251f30;cursor:pointer}
 .route-day-pins button:active{transform:scale(.94)}
+.route-stage-pin{display:grid;place-items:center;width:30px;height:30px;border:2px solid #fff;border-radius:50%;background:#a63128;color:#fff;font-size:12px;font-weight:800;box-shadow:0 2px 8px #20251f30}
 .route-city-label{white-space:nowrap;background:#fffdf8eF;color:#27393a;border:1px solid #d6d0c4;border-radius:99px;padding:4px 8px;font-size:10px;font-weight:750;letter-spacing:.02em;box-shadow:0 2px 8px #20251f12}
 .map-north{position:absolute;right:8%;top:5%;font:700 11px Georgia,serif;color:#67706a;border-bottom:1px solid #67706a;padding-bottom:4px}
 .map-caption{font-size:10px;line-height:1.5;font-weight:750;letter-spacing:.09em;color:#a63128;margin:14px 4px 6px}
 .map-note{font-size:12px;line-height:1.5;color:#69716c;margin:0 4px 5px}
+.map-day-groups{margin:21px 3px 4px;border-top:1px solid #d7d2c8;padding-top:14px}
+.map-day-groups>h2{font-size:18px;color:#293d3e;margin:0 0 8px}
+.map-day-group{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:9px;padding:10px 0;border-top:1px solid #dfdbd1}
+.map-day-group>span{font-size:13px;font-weight:700;color:#3d5453}
+.map-day-group>div{display:flex;gap:8px;flex-wrap:wrap}
+.map-day-group button{width:42px;height:42px;border-radius:50%;border:1px solid #d1c9bc;background:#fffdf8;color:#a63128;font-size:14px;font-weight:800;cursor:pointer;touch-action:manipulation}
+.map-day-group button:active{background:#a63128;color:white;transform:scale(.96)}
 .coverage-note{margin:13px 0 4px;padding:12px 13px;background:#f2efe7;border-left:3px solid #b13a2e;border-radius:0 12px 12px 0}
 .coverage-note>span{display:inline-block;color:#a63128;font-size:11px;letter-spacing:.055em;font-weight:800}
 .coverage-note p{font-size:13px;line-height:1.55;color:#374748;margin:7px 0}

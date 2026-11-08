@@ -19,14 +19,16 @@ export function RouteMap({ days, onSelect }: { days: Day[]; onSelect: (id: strin
       </svg>
       {stops.map((stop, n) => <div className={`route-stop route-stop-${n}`} key={stop.city} style={{ left: `${stop.x}%`, top: `${stop.y}%` }}>
         <span className="route-city-label">{stop.city}</span>
-        <div className="route-day-pins">{stop.ids.map(id => {
-          const day = days.find(d => d.id === id);
-          return day ? <button key={id} aria-label={`Día ${days.indexOf(day) + 1}: ${day.city}, ${day.title}`} onClick={() => onSelect(day.id)}>{days.indexOf(day) + 1}</button> : null;
-        })}</div>
+        <span className="route-stage-pin" aria-hidden="true">{n + 1}</span>
       </div>)}
       <span className="map-north">N</span>
     </div>
     <p className="map-caption">13—25 MAYO · OSAKA → KUMANO → KIOTO → TAKAYAMA → TOKIO</p>
-    <p className="map-note">Mapa geográfico orientativo. Toca el número de una jornada para abrirla; la línea muestra el orden del viaje, no el trazado exacto de trenes o carreteras.</p>
+    <p className="map-note">Mapa geográfico orientativo. La línea indica el orden del viaje, no el trazado exacto de trenes o carreteras.</p>
+    <div className="map-day-groups"><h2>Elige una jornada</h2>{stops.map(stop=>{
+      const group=stop.ids.map(id=>days.find(d=>d.id===id)).filter((day):day is Day=>Boolean(day));
+      if(!group.length)return null;
+      return <div className="map-day-group" key={stop.city}><span>{stop.city}</span><div>{group.map(day=><button key={day.id} onClick={()=>onSelect(day.id)} aria-label={`Abrir día ${days.indexOf(day)+1}: ${day.title}`}>{String(days.indexOf(day)+1).padStart(2,'0')}</button>)}</div></div>;
+    })}</div>
   </section>;
 }
