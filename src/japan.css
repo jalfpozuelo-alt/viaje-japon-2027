@@ -100,5 +100,6 @@
 .japan-route-map.map-large .route-day-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}
 .japan-route-map.map-large .route-map-art{width:min(100%,460px);height:min(68vh,620px);aspect-ratio:auto;margin:0 auto}
 .japan-route-map.map-large .route-map-art>img{object-fit:contain}
+.route-map-art{aspect-ratio:952/1120}
 @media(max-width:360px){.route-layout{grid-template-columns:minmax(122px,44%) minmax(0,1fr);gap:4px}.route-day-group{gap:5px}.route-day-buttons{gap:3px}.route-day-buttons button{width:26px;height:26px;min-width:26px}}
 @media(min-width:760px){.japan-route-map{max-width:900px;padding:24px}.route-layout{grid-template-columns:310px minmax(0,1fr);gap:20px}.route-day-group{padding:13px 0;grid-template-columns:32px 1fr}.route-stage-number{width:30px;height:30px;font-size:13px}.route-day-copy>b{font-size:15px}.route-day-buttons button{width:35px;height:35px;min-width:35px;font-size:12px}.route-map-art{max-height:620px}.route-map-point{width:29px;height:29px;font-size:12px}}

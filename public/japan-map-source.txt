@@ -1,0 +1,3 @@
+Cartographic outline: Natural Earth, 1:110m country geometry, public domain.
+Source repository: https://github.com/nvkelso/natural-earth-vector
+The map is rendered in a local equirectangular projection. The itinerary marker coordinates are stored in src/RouteMap.tsx.
