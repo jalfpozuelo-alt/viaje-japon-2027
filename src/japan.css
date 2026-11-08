@@ -34,3 +34,33 @@
 .field-guide-step h3,.food-tip h3{font-size:18px;margin:7px 0;color:#293d3e}
 .food-tip{padding:18px 0;border-top:1px solid #e4e1d9}
 @media(min-width:760px){.prepare-page{max-width:850px;margin:auto}.prep-task{grid-template-columns:44px 1fr}.field-guide-step,.food-tip,.manners-tip{padding-top:22px;padding-bottom:22px}}
+
+/* Mapa geográfico y decisiones de transporte */
+.japan-route-map{margin:18px 0 100px;background:#f0ede4;border-radius:24px;padding:14px;overflow:hidden}
+.route-map-art{position:relative;width:100%;max-width:650px;margin:auto;aspect-ratio:1187/1342;background:radial-gradient(ellipse at 54% 54%,#faf8f2,#e9e6dc 72%);border-radius:17px;overflow:hidden}
+.route-map-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.88;filter:sepia(.15) saturate(.75)}
+.route-trajectory{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.route-trajectory path{fill:none;stroke:#b83a2f;stroke-width:.65;stroke-dasharray:1.2 1.1;stroke-linecap:round;stroke-linejoin:round;opacity:.92}
+.route-trajectory marker path{fill:#b83a2f;stroke:none}
+.route-stop{position:absolute;z-index:2;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px}
+.route-stop-1,.route-stop-3{flex-direction:column-reverse}
+.route-stop-2{flex-direction:column}
+.route-stop-4{flex-direction:column}
+.route-day-pins{display:flex;gap:3px;flex-wrap:nowrap}
+.route-day-pins button{width:30px;height:30px;min-width:30px;padding:0;border:2px solid #fff;border-radius:50%;background:#a63128;color:white;font-size:12px;font-weight:750;box-shadow:0 2px 8px #20251f30;cursor:pointer}
+.route-day-pins button:active{transform:scale(.94)}
+.route-city-label{white-space:nowrap;background:#fffdf8eF;color:#27393a;border:1px solid #d6d0c4;border-radius:99px;padding:4px 8px;font-size:10px;font-weight:750;letter-spacing:.02em;box-shadow:0 2px 8px #20251f12}
+.map-north{position:absolute;right:8%;top:5%;font:700 11px Georgia,serif;color:#67706a;border-bottom:1px solid #67706a;padding-bottom:4px}
+.map-caption{font-size:10px;line-height:1.5;font-weight:750;letter-spacing:.09em;color:#a63128;margin:14px 4px 6px}
+.map-note{font-size:12px;line-height:1.5;color:#69716c;margin:0 4px 5px}
+.coverage-note{margin:13px 0 4px;padding:12px 13px;background:#f2efe7;border-left:3px solid #b13a2e;border-radius:0 12px 12px 0}
+.coverage-note>span{display:inline-block;color:#a63128;font-size:11px;letter-spacing:.055em;font-weight:800}
+.coverage-note p{font-size:13px;line-height:1.55;color:#374748;margin:7px 0}
+.coverage-note .coverage-action{color:#74513a}
+.coverage-note a,.pass-window a{display:inline-block;margin-top:3px;color:#286d70;font-size:13px;font-weight:750;text-decoration:none}
+.pass-window{padding:19px;margin:18px 0 26px;background:#273b3c;color:#f7f3ea;border-radius:18px}
+.pass-window .eyebrow{color:#e5b4a4}
+.pass-window h2{font-size:25px;margin:5px 0 9px}
+.pass-window p:not(.eyebrow){font-size:14px;line-height:1.65;color:#e3e5dd;margin:8px 0}
+.pass-window a{color:#f0c2a7}
+@media(min-width:760px){.japan-route-map{max-width:760px;margin-left:auto;margin-right:auto;padding:24px}.route-day-pins button{width:34px;height:34px}.route-city-label{font-size:12px}}
