@@ -16,22 +16,63 @@ export function validateTrip(value: unknown): value is Trip {
 // Replace only the known cover URLs shipped by the previous release. Custom URLs
 // from the private editor are left untouched.
 function migrateLegacyCoverImages(trip: Trip): Trip {
-  const legacy: Record<string, string> = {
-    '20': 'Osaka castle.jpg',
-    '21': 'Arashiyama Bamboo Grove.jpg',
-    '22': 'Kiyomizu-dera in Kyoto-r.jpg',
-    '23': 'Arashiyama Bamboo Grove.jpg',
-    '24': 'Osaka Dotonbori Canal.jpg',
-    '25': 'Tokyo Station Marunouchi Building 2016.jpg',
+  const legacy: Record<string, string[]> = {
+    '17': ['Kiyomizu-dera in Kyoto-r.jpg'],
+    '20': ['Osaka castle.jpg'],
+    '21': ['Arashiyama Bamboo Grove.jpg'],
+    '22': ['Kiyomizu-dera in Kyoto-r.jpg'],
+    '23': ['Arashiyama Bamboo Grove.jpg'],
+    '24': ['Osaka Dotonbori Canal.jpg'],
+    '25': ['Tokyo Station Marunouchi Building 2016.jpg', 'Tokyo Station Marunouchi.jpg'],
   };
   let changed = false;
   const days = trip.days.map(day => {
-    const previous = legacy[day.id];
-    if (!previous || !day.image.includes(encodeURIComponent(previous))) return day;
-    const current = defaultTrip.days.find(item => item.id === day.id)?.image;
-    if (!current) return day;
-    changed = true;
-    return { ...day, image: current };
+    const currentDefault = defaultTrip.days.find(item => item.id === day.id);
+    if (!currentDefault) return day;
+    let next = day;
+    const oldFiles = legacy[day.id] || [];
+    if (oldFiles.some(file => day.image.includes(encodeURIComponent(file)))) {
+      next = { ...next, image: currentDefault.image };
+      changed = true;
+    } else if (day.image.includes('commons.wikimedia.org/')) {
+      const smaller = day.image.replace(/([?&]width=)1200(?=&|$)/, (_match, prefix: string) => `${prefix}900`);
+      if (smaller !== day.image) {
+        next = { ...next, image: smaller };
+        changed = true;
+      }
+    }
+
+    if (day.id === '15') {
+      const existingPlaceIds = new Set(next.places.map(place => place.id));
+      const additions = currentDefault.places.filter(place =>
+        ['mizunomi', 'fushiogami', 'haraido', 'oyunohara', 'tanabe-credential', 'hongu-heritage'].includes(place.id) &&
+        !existingPlaceIds.has(place.id));
+      const existingTransportIds = new Set(next.transports.map(transport => transport.id));
+      const busToTrailhead = currentDefault.transports.filter(transport =>
+        transport.id === 'kawayu-hosshinmon' && !existingTransportIds.has(transport.id));
+      const oldCredentialNote = 'Preguntar por la credencial Dual Pilgrim y sellos vigentes en Tanabe Tourist Information o Kumano Hongu Heritage Center.';
+      const updatedCredentialNotes = currentDefault.notes.filter(note =>
+        note.startsWith('Credencial Dual Pilgrim:') || note.startsWith('El sello de finalización') || note.startsWith('Objetivo Dual Pilgrim'));
+      let notes = next.notes;
+      if (notes.includes(oldCredentialNote)) {
+        notes = notes.filter(note => note !== oldCredentialNote);
+        for (const note of updatedCredentialNotes) if (!notes.includes(note)) notes.push(note);
+      }
+      if (additions.length || busToTrailhead.length || notes !== next.notes) {
+        next = { ...next, places: [...next.places, ...additions], transports: [...next.transports, ...busToTrailhead], notes };
+        changed = true;
+      }
+    }
+
+    if (day.id === '16') {
+      const previousHayatamaDetail = 'Parada opcional en Shingu. Omitir sin dudar si ajusta demasiado el día.';
+      const updatedHayatama = currentDefault.places.find(place => place.id === 'hayatama');
+      if (updatedHayatama && next.places.some(place => place.id === 'hayatama' && place.detail === previousHayatamaDetail)) {
+        next = { ...next, places: next.places.map(place => place.id === 'hayatama' ? updatedHayatama : place) };
+        changed = true;
+      }
+    }
+    return next;
   });
   return changed ? { ...trip, days } : trip;
 }
