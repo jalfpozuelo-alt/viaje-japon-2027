@@ -53,7 +53,7 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
     if (day.id === '15') {
       const existingPlaceIds = new Set(next.places.map(place => place.id));
       const additions = currentDefault.places.filter(place =>
-        ['mizunomi', 'fushiogami', 'haraido', 'oyunohara', 'tanabe-credential', 'hongu-heritage'].includes(place.id) &&
+        ['mizunomi', 'fushiogami', 'haraido', 'oyunohara', 'tanabe-credential', 'hongu-heritage', 'yunomine-tsuboyu'].includes(place.id) &&
         !existingPlaceIds.has(place.id));
       const existingTransportIds = new Set(next.transports.map(transport => transport.id));
       const busToTrailhead = currentDefault.transports.filter(transport =>
@@ -61,10 +61,18 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
       const oldCredentialNote = 'Preguntar por la credencial Dual Pilgrim y sellos vigentes en Tanabe Tourist Information o Kumano Hongu Heritage Center.';
       const updatedCredentialNotes = currentDefault.notes.filter(note =>
         note.startsWith('Credencial Dual Pilgrim:') || note.startsWith('El sello de finalización') || note.startsWith('Objetivo Dual Pilgrim'));
+      const daySplitNotes = currentDefault.notes.filter(note =>
+        note.startsWith('Reunión de ambos grupos:') || note.startsWith('Alternativa para el grupo que no camina:'));
       let notes = next.notes;
       if (notes.includes(oldCredentialNote)) {
         notes = notes.filter(note => note !== oldCredentialNote);
         for (const note of updatedCredentialNotes) if (!notes.includes(note)) notes.push(note);
+      }
+      for (const note of daySplitNotes) if (!notes.includes(note)) notes = [...notes, note];
+      const currentKawayu = currentDefault.places.find(place => place.id === 'kawayu');
+      if (currentKawayu && next.places.some(place => place.id === 'kawayu' && place.name === 'Kawayu Onsen / Yunomine Onsen')) {
+        next = { ...next, places: next.places.map(place => place.id === 'kawayu' ? currentKawayu : place) };
+        changed = true;
       }
       if (additions.length || busToTrailhead.length || notes !== next.notes) {
         next = { ...next, places: [...next.places, ...additions], transports: [...next.transports, ...busToTrailhead], notes };
