@@ -1,0 +1,51 @@
+.route-page{padding:24px 17px calc(110px + env(safe-area-inset-bottom));max-width:980px;margin:0 auto;overflow-x:hidden}
+.route-heading{padding:4px 2px 16px}
+.route-heading .eyebrow,.route-timeline>.eyebrow,.kumano-inset-copy .eyebrow{font-size:10px;letter-spacing:.15em;color:#a43d31;font-weight:800;margin:0 0 8px}
+.route-heading h1{font-size:clamp(30px,8vw,42px);line-height:1.06;letter-spacing:-.04em;color:#263b3e;margin:0 0 10px}
+.route-heading>p:last-child{font-size:15px;line-height:1.55;color:#657271;margin:0;max-width:36em}
+.route-atlas{border-radius:23px;overflow:hidden;padding:9px;background:#c5dce1;box-shadow:0 9px 26px #31495113}
+.atlas-map{position:relative;width:100%;aspect-ratio:952/1120;overflow:hidden;border-radius:16px;background:#c5dce1;isolation:isolate}
+.atlas-land{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0}
+.atlas-paths{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1}
+.atlas-route-line{fill:none;stroke:#a63128;stroke-width:.52;stroke-dasharray:1.15 .9;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.atlas-paths marker path{fill:#a63128;stroke:none}
+.atlas-leader{stroke:#73564b;stroke-width:.34;stroke-dasharray:.7 .5;opacity:.9}
+.atlas-location-dot{fill:#a63128;stroke:#fffdf8;stroke-width:.45}
+.atlas-marker{position:absolute;z-index:4;transform:translate(-50%,-50%);min-height:34px;padding:5px 8px;display:flex;align-items:center;gap:5px;border:1px solid #dfd6c7;border-radius:99px;background:rgba(255,253,248,.96);color:#2e4142;font-size:9px;font-weight:750;line-height:1.15;white-space:nowrap;box-shadow:0 2px 6px #27383b24;cursor:pointer;touch-action:manipulation}
+.atlas-marker span{display:grid;place-items:center;flex:none;width:18px;height:18px;border:1px solid #fff;border-radius:50%;background:#a63128;color:white;font-size:9px;font-weight:850}
+.atlas-marker.regional-marker span{width:auto;min-width:23px;padding:0 3px;border-radius:99px}
+.atlas-marker:active{transform:translate(-50%,-50%) scale(.97)}
+.atlas-north{position:absolute;z-index:2;right:5%;top:3%;padding:5px 7px;border-radius:9px;background:#f8f6eecc;color:#506466;font-size:9px;font-weight:800}
+.atlas-ocean-label{position:absolute;z-index:1;color:#62808a;opacity:.72;font-size:7px;letter-spacing:.18em;font-weight:700;white-space:nowrap;pointer-events:none}
+.atlas-ocean-pacific{right:2%;top:79%;writing-mode:vertical-rl}.atlas-ocean-japan{left:4%;top:47%;writing-mode:vertical-rl}
+.atlas-caption{margin:9px 5px 3px;color:#536d72;font-size:10px;line-height:1.45}
+.kumano-inset{margin:18px 0 32px;padding:16px;border:1px solid #e0d9cd;border-radius:20px;background:#f8f5ed;display:grid;grid-template-columns:1fr;gap:11px;overflow:hidden}
+.kumano-inset-copy h2{margin:0 0 6px;color:#2b4142;font-size:20px}
+.kumano-inset-copy>p:last-child{margin:0;color:#667474;font-size:13px;line-height:1.5}
+.kumano-inset-map{position:relative;width:100%;aspect-ratio:1.34;border-radius:13px;overflow:hidden;background:#c4dbe0}
+.kumano-inset-map>img,.kumano-inset-map>svg{position:absolute;inset:0;width:100%;height:100%}
+.kumano-inset-map>img{object-fit:fill}
+.kumano-inset-map>svg{overflow:visible}
+.kumano-inset-map>svg path{fill:none;stroke:#a63128;stroke-width:1.1;stroke-dasharray:2 1.6;stroke-linecap:round;marker-end:url(#kumano-arrow)}
+.kumano-inset-map marker path{fill:#a63128;stroke:none}
+.kumano-dot{position:absolute;z-index:2;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid #e0d7c8;border-radius:99px;background:#fffdf0ed;color:#293e40;white-space:nowrap;cursor:pointer;touch-action:manipulation}
+.kumano-dot b{display:grid;place-items:center;width:23px;height:23px;border:2px solid #fffdf8;border-radius:50%;background:#a63128;color:white;font-size:11px;box-shadow:0 1px 5px #24393c4a}
+.kumano-dot small{font-size:10px;font-weight:750;color:#293e40}
+.route-timeline{margin:28px 1px 0}
+.route-timeline>h2{margin:0 0 8px;color:#293f41;font-size:26px;letter-spacing:-.025em}
+.route-stage-card{display:grid;grid-template-columns:38px minmax(0,1fr);gap:11px;padding:17px 0 15px;border-top:1px solid #ddd8ce}
+.stage-start{width:38px;height:44px;padding:0;border:0;background:transparent;display:grid;place-items:start center;cursor:pointer;touch-action:manipulation}
+.stage-start span{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#293f41;color:#fff;font-size:12px;font-weight:800}
+.stage-content>small,.route-segment small{display:block;color:#8c6759;font-size:10px;letter-spacing:.07em;text-transform:uppercase;line-height:1.45}
+.stage-content h3{margin:3px 0 10px;color:#293f41;font-size:18px;line-height:1.3}
+.stage-day-buttons{display:flex;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;padding:1px 0 5px;scrollbar-width:none}
+.stage-day-buttons::-webkit-scrollbar{display:none}
+.stage-day-buttons button{flex:0 0 auto;min-width:62px;min-height:48px;padding:7px 9px;border:1px solid #d8d1c5;border-radius:12px;background:#fbf9f3;color:#a13a2f;font-size:12px;font-weight:800;text-align:left;touch-action:manipulation}
+.stage-day-buttons button small{display:block;margin-top:2px;color:#697576;font-size:10px;font-weight:550}
+.route-segment{display:grid;grid-template-columns:38px minmax(0,1fr);gap:11px;padding:0 0 15px;color:#384c4d}
+.segment-arrow{position:relative;display:grid;place-items:center;color:#a63128;font-size:17px}
+.segment-arrow:before{content:"";position:absolute;top:-18px;bottom:13px;left:50%;width:1px;background:#d1c8b9;z-index:-1}
+.route-segment>div{padding:10px 12px;border-left:2px solid #bc7664;background:#f2efe7;border-radius:0 12px 12px 0}
+.route-segment b,.route-segment em{display:block;margin-top:4px;font-size:13px;line-height:1.48;font-style:normal}
+.route-segment em{color:#79604e;font-size:12px}
+@media(min-width:700px){.route-page{padding-top:34px}.route-heading{padding-bottom:22px}.route-atlas{padding:15px}.atlas-map{max-height:760px}.atlas-marker{font-size:11px;padding:6px 10px}.atlas-marker span{width:21px;height:21px;font-size:11px}.kumano-inset{grid-template-columns:minmax(220px,.8fr) minmax(0,1.5fr);align-items:center;padding:20px}.route-timeline{max-width:760px;margin-left:auto;margin-right:auto}.route-stage-card{grid-template-columns:42px 1fr}.route-segment{grid-template-columns:42px 1fr}}
