@@ -136,9 +136,12 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
     }
 
     if (day.id === '16') {
-      const previousHayatamaDetail = 'Parada opcional en Shingu. Omitir sin dudar si ajusta demasiado el día.';
+      const previousHayatamaDetails = [
+        'Parada opcional en Shingu. Omitir sin dudar si ajusta demasiado el día.',
+        'Parada opcional en Shingu si no se busca completar la opción Dual Pilgrim de Hosshinmon–Hongu. Para ese objetivo, la fuente oficial vigente exige también visitar este santuario y Kumano Nachi Taisha; comprobar horario de bus y sellos antes de decidir.',
+      ];
       const updatedHayatama = currentDefault.places.find(place => place.id === 'hayatama');
-      if (updatedHayatama && next.places.some(place => place.id === 'hayatama' && place.detail === previousHayatamaDetail)) {
+      if (updatedHayatama && next.places.some(place => place.id === 'hayatama' && previousHayatamaDetails.includes(place.detail))) {
         next = { ...next, places: next.places.map(place => place.id === 'hayatama' ? updatedHayatama : place) };
         changed = true;
       }
@@ -161,11 +164,11 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
     }
     if (day.id === '16' || day.id === '18' || day.id === '21' || day.id === '22' || day.id === '23' || day.id === '24' || day.id === '25') {
       const defaultSteps = new Map((currentDefault.guideSteps || []).map(step => [step.id, step]));
-      const refreshedIds = new Set(day.id === '16' ? ['kawayu-shingu', 'shingu-katsuura', 'nachisan-bus'] : day.id === '18' ? ['kiyomizu-access'] : day.id === '21' ? ['takayama-hotel'] : day.id === '22' ? ['tokyo-hotel'] : day.id === '23' ? ['yanaka-start'] : day.id === '24' ? ['meiji', 'shinjuku-return'] : ['airport-return', 'airport-route']);
+      const refreshedIds = new Set(day.id === '16' ? ['kawayu-shingu', 'shingu-katsuura', 'nachisan-bus', 'dual-credential-katsuura'] : day.id === '18' ? ['kiyomizu-access'] : day.id === '21' ? ['takayama-hotel'] : day.id === '22' ? ['tokyo-hotel'] : day.id === '23' ? ['yanaka-start'] : day.id === '24' ? ['meiji', 'shinjuku-return'] : ['airport-return', 'airport-route']);
       const refreshedSteps = (next.guideSteps || []).map(step => {
         const latest = defaultSteps.get(step.id);
         if (!latest || !refreshedIds.has(step.id)) return step;
-        const oldVague = /aún no está identificado|dirección aún pendiente|dependerá de la dirección|Pendiente decidir aeropuerto|HND y NRT son distintos|Cuando se confirme el hotel|Confirma en la tabla oficial|Desde Shingu usa el tren JR|bus\/taxi\/recorrido urbano por decidir/i.test(step.detail) || day.id === '16' && (step.id === 'kawayu-shingu' && step.detail.startsWith('Desde la parada de Kawayu que indique el hotel') || step.id === 'shingu-katsuura' && step.detail.startsWith('En Shingu Station sigue los carteles JR') || step.id === 'nachisan-bus' && step.detail.startsWith('Desde Kii-Katsuura Station sal por la salida'));
+        const oldVague = /aún no está identificado|dirección aún pendiente|dependerá de la dirección|Pendiente decidir aeropuerto|HND y NRT son distintos|Cuando se confirme el hotel|Confirma en la tabla oficial|Desde Shingu usa el tren JR|bus\/taxi\/recorrido urbano por decidir/i.test(step.detail) || day.id === '16' && (step.id === 'kawayu-shingu' && step.detail.startsWith('Desde la parada de Kawayu que indique el hotel') || step.id === 'shingu-katsuura' && step.detail.startsWith('En Shingu Station sigue los carteles JR') || step.id === 'nachisan-bus' && step.detail.startsWith('Desde Kii-Katsuura Station sal por la salida') || step.id === 'dual-credential-katsuura' && step.detail.startsWith('Sí pasáis por Tanabe el día 15:'));
         return oldVague ? latest : step;
       });
       const addedSteps = day.id === '16' ? (currentDefault.guideSteps || []).filter(step => !refreshedSteps.some(existing => existing.id === step.id)) : [];
