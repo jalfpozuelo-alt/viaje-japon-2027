@@ -103,3 +103,27 @@
 .route-map-art{aspect-ratio:952/1120}
 @media(max-width:360px){.route-layout{grid-template-columns:minmax(122px,44%) minmax(0,1fr);gap:4px}.route-day-group{gap:5px}.route-day-buttons{gap:3px}.route-day-buttons button{width:26px;height:26px;min-width:26px}}
 @media(min-width:760px){.japan-route-map{max-width:900px;padding:24px}.route-layout{grid-template-columns:310px minmax(0,1fr);gap:20px}.route-day-group{padding:13px 0;grid-template-columns:32px 1fr}.route-stage-number{width:30px;height:30px;font-size:13px}.route-day-copy>b{font-size:15px}.route-day-buttons button{width:35px;height:35px;min-width:35px;font-size:12px}.route-map-art{max-height:620px}.route-map-point{width:29px;height:29px;font-size:12px}}
+
+/* Mapa ampliado como fondo editorial; las cifras se separan de las coordenadas exactas */
+.route-layout{position:relative;display:block;min-height:390px;overflow:hidden;border-radius:18px;background:#f4f1e9}
+.route-day-list{position:relative;z-index:3;width:44%;min-height:390px;padding:12px 0;justify-content:center;gap:3px}
+.route-day-group{grid-template-columns:25px minmax(0,1fr);gap:6px;padding:8px 7px;border:1px solid #dcd7cc;border-radius:13px;background:rgba(250,248,242,.83);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.route-day-group:last-child{border-bottom:1px solid #dcd7cc}
+.route-day-copy>b{font-size:12px;margin-bottom:4px}
+.route-day-buttons{gap:3px}
+.route-day-buttons button{width:25px;height:25px;min-width:25px;font-size:10px;background:rgba(255,253,248,.94)}
+.route-map-art{position:absolute;z-index:1;top:50%;left:10%;width:90%;height:auto;max-width:none;margin:0;transform:translateY(-50%);aspect-ratio:952/1120;overflow:visible;border-radius:0;background:transparent}
+.route-map-art>img{opacity:.35;filter:none;object-fit:contain}
+.route-trajectory{z-index:2;overflow:visible}
+.route-trajectory .route-line{fill:none;stroke:#a63128;stroke-width:.62;stroke-dasharray:1.25 1.1;stroke-linecap:round;stroke-linejoin:round;opacity:.95}
+.route-trajectory marker path{fill:#a63128;stroke:none}
+.route-leader line{stroke:#82392f;stroke-width:.42;stroke-dasharray:.65 .55;opacity:.9}
+.route-leader circle{fill:#82392f;stroke:#fffdf8;stroke-width:.35}
+.route-map-point{display:grid;place-items:center;position:absolute;z-index:3;transform:translate(-50%,-50%);width:17px;height:17px;border:1.5px solid #fffdf8;border-radius:50%;background:#a63128;color:#fff;font-size:9px;font-weight:800;line-height:1;box-shadow:0 1px 4px #2226}
+.map-controls .map-caption{font-size:9px;letter-spacing:.06em}
+.japan-route-map.map-large .route-layout{display:block;min-height:min(76vh,680px)}
+.japan-route-map.map-large .route-map-art{left:0;right:auto;width:100%;height:auto;max-height:none;aspect-ratio:952/1120}
+.japan-route-map.map-large .route-day-list{width:44%;min-height:min(76vh,680px);grid-template-columns:1fr;display:flex;padding:16px 0}
+.japan-route-map.map-large .route-map-point{width:20px;height:20px;font-size:10px}
+@media(min-width:760px){.route-layout{min-height:680px}.route-day-list{width:36%;min-height:680px;gap:6px}.route-day-group{grid-template-columns:30px 1fr;gap:9px;padding:12px 10px}.route-stage-number{width:27px;height:27px}.route-day-copy>b{font-size:15px}.route-day-buttons{gap:5px}.route-day-buttons button{width:33px;height:33px;min-width:33px;font-size:12px}.route-map-art{left:31%;width:66%}.route-map-point{width:20px;height:20px;font-size:10px}.japan-route-map.map-large .route-layout{min-height:min(78vh,760px)}.japan-route-map.map-large .route-map-art{width:75%;left:24%;right:auto}.japan-route-map.map-large .route-day-list{width:36%;min-height:min(78vh,760px)}}
+@media(max-width:360px){.route-day-list,.japan-route-map.map-large .route-day-list{width:48%}.route-day-buttons button{width:23px;height:23px;min-width:23px}.route-map-art{left:8%;width:92%}}
