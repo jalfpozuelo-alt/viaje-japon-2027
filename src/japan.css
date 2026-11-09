@@ -85,6 +85,15 @@
 .lodging-needed{display:inline-block;margin:5px 0;padding:4px 9px;border-radius:99px;background:#f2e9dc;color:#76573c;font-size:11px;font-weight:750}
 @media(max-width:699px){body{padding-bottom:calc(92px + env(safe-area-inset-bottom))}nav{height:calc(78px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}}
 @media(min-width:700px){nav{right:max(0px,calc(50% - 380px))}}
+/* Lectura rápida y controles cómodos al recorrer una jornada */
+.page{min-width:0;overflow-wrap:anywhere}
+.place p,.journey p,.hotel p,.field-guide-step p,.food-tip p{font-size:15px;line-height:1.65}
+.place .facts{padding:10px 12px;border-left:2px solid #b96b54;background:#eee9df;color:#435251;border-radius:0 8px 8px 0}
+.links a,.hotel a,.journey button,.day-transport-list .travel a{min-height:42px;display:inline-flex;align-items:center;padding:8px 0}
+.daynav button{flex-basis:40px;height:40px;touch-action:manipulation}
+.daynav{scroll-snap-type:x proximity}
+.daynav button{scroll-snap-align:center}
+@media(max-width:360px){.page{padding-left:16px;padding-right:16px}.daynav{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}}
 @media(min-width:760px){.japan-route-map{max-width:760px;margin-left:auto;margin-right:auto;padding:24px}.route-day-pins button{width:34px;height:34px}.route-city-label{font-size:12px}}
 
 /* Atlas editorial: itinerary rail beside an uncluttered geographic map */
