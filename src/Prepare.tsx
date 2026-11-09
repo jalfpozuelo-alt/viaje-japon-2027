@@ -18,3 +18,4 @@ export function Prepare({ trip, done, toggle }: { trip: Trip; done: string[]; to
     </section>
   </main>;
 }
+

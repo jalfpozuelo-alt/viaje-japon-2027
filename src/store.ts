@@ -38,6 +38,22 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
       next = { ...next, foodTips: currentDefault.foodTips };
       changed = true;
     }
+    const defaultTransportById = new Map(currentDefault.transports.map(transport => [transport.id, transport]));
+    const migratedTransports = next.transports.map(transport => {
+      const current = defaultTransportById.get(transport.id);
+      if (!current) return transport;
+      let migrated = transport;
+      if (!migrated.map && current.map) migrated = { ...migrated, map: current.map };
+      if (day.id === '25' && transport.id === 'airport-return' && /Pendiente HND|Haneda|Narita/i.test(`${transport.route} ${transport.detail}`)) {
+        migrated = { ...current, status: transport.status };
+      }
+      return migrated;
+    });
+    const newTransports = currentDefault.transports.filter(transport => !next.transports.some(existing => existing.id === transport.id));
+    if (migratedTransports.some((transport, index) => transport !== next.transports[index]) || newTransports.length) {
+      next = { ...next, transports: [...migratedTransports, ...newTransports] };
+      changed = true;
+    }
     const oldFiles = legacy[day.id] || [];
     if (oldFiles.some(file => day.image.includes(encodeURIComponent(file)))) {
       next = { ...next, image: currentDefault.image };
@@ -63,12 +79,51 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
         note.startsWith('Credencial Dual Pilgrim:') || note.startsWith('El sello de finalización') || note.startsWith('Objetivo Dual Pilgrim'));
       const daySplitNotes = currentDefault.notes.filter(note =>
         note.startsWith('Reunión de ambos grupos:') || note.startsWith('Alternativa para el grupo que no camina:'));
+      const defaultSteps = new Map((currentDefault.guideSteps || []).map(step => [step.id, step]));
+      const migratedSteps = (next.guideSteps || []).map(step => {
+        const latest = defaultSteps.get(step.id);
+        if (!latest) return step;
+        const knownOutdatedStep = step.id === 'osaka-to-tanabe' && step.detail.startsWith('Desde Namba toma Osaka Metro Midosuji Line') ||
+          step.id === 'tanabe-bus' && step.detail.startsWith('Al salir de JR Kii-Tanabe Station') ||
+          step.id === 'trail-start' && (step.detail.startsWith('Desde el hotel, pregunta en recepción') || step.detail.startsWith('El recorrido no empieza en el hotel.')) ||
+          step.id === 'trail-return' && step.detail.startsWith('El sendero termina junto a Kumano Hongu Taisha') ||
+          step.id === 'credential' && step.detail.startsWith('Es gratuita. Si llegas con tiempo en Kii-Tanabe');
+        if (knownOutdatedStep) return { ...latest, status: step.status };
+        return step;
+      });
+      const addedTrailSteps = (currentDefault.guideSteps || []).filter(step => !migratedSteps.some(existing => existing.id === step.id));
+      if (addedTrailSteps.length || migratedSteps.some((step, i) => step !== next.guideSteps?.[i])) {
+        next = { ...next, guideSteps: [...migratedSteps, ...addedTrailSteps] };
+        changed = true;
+      }
+      const oldSchedule = next.schedule.some(item => item.includes('Caminata solo si hay margen'));
+      if (oldSchedule) { next = { ...next, schedule: currentDefault.schedule }; changed = true; }
+      const defaultTransportById = new Map(currentDefault.transports.map(transport => [transport.id, transport]));
+      const refreshedTransports = next.transports.map(transport => {
+        const latest = defaultTransportById.get(transport.id);
+        if (!latest) return transport;
+        const outdated = transport.id === 'kuroshio' && transport.detail.includes('suele requerir 2 h 15') ||
+          transport.id === 'kumano-bus' && transport.detail.includes('confirmar enlace real') ||
+          transport.id === 'kawayu-hosshinmon' && transport.detail.includes('Coordinar con la llegada desde Osaka') ||
+          transport.id === 'hongu-kawayu-return' && transport.detail.includes('varios servicios de Ryujin Bus hacia Kawayu');
+        return outdated ? { ...latest, status: transport.status } : transport;
+      });
+      const addedTransports = currentDefault.transports.filter(transport => !refreshedTransports.some(existing => existing.id === transport.id));
+      if (addedTransports.length || refreshedTransports.some((transport, index) => transport !== next.transports[index])) {
+        next = { ...next, transports: [...refreshedTransports, ...addedTransports] };
+        changed = true;
+      }
       let notes = next.notes;
       if (notes.includes(oldCredentialNote)) {
         notes = notes.filter(note => note !== oldCredentialNote);
         for (const note of updatedCredentialNotes) if (!notes.includes(note)) notes.push(note);
       }
       for (const note of daySplitNotes) if (!notes.includes(note)) notes = [...notes, note];
+      const obsoleteWalkWarning = notes.find(note => note.startsWith('La caminata del día 15 puede no ser viable tras el traslado desde Osaka.'));
+      if (obsoleteWalkWarning) {
+        notes = notes.filter(note => note !== obsoleteWalkWarning);
+        for (const note of currentDefault.notes.filter(item => item.startsWith('Plan caminante de referencia:'))) if (!notes.includes(note)) notes.push(note);
+      }
       const currentKawayu = currentDefault.places.find(place => place.id === 'kawayu');
       if (currentKawayu && next.places.some(place => place.id === 'kawayu' && place.name === 'Kawayu Onsen / Yunomine Onsen')) {
         next = { ...next, places: next.places.map(place => place.id === 'kawayu' ? currentKawayu : place) };
@@ -87,13 +142,75 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
         next = { ...next, places: next.places.map(place => place.id === 'hayatama' ? updatedHayatama : place) };
         changed = true;
       }
+      const currentTransportById = new Map(currentDefault.transports.map(item => [item.id, item]));
+      const day16Transports = next.transports.map(item => {
+        const latest = currentTransportById.get(item.id);
+        if (!latest) return item;
+        const oldDetail = item.id === 'kawayu-shingu' && item.detail.includes('La parada en Hayatama Taisha solo entra') ||
+          item.id === 'nachi-bus' && item.detail === 'Confirmar parada de subida/bajada y último regreso antes de salir.';
+        return oldDetail ? { ...latest, status: item.status } : item;
+      });
+      if (day16Transports.some((item, i) => item !== next.transports[i])) {
+        next = { ...next, transports: day16Transports };
+        changed = true;
+      }
+      if (next.schedule.includes('Bus Kawayu → Shingu')) {
+        next = { ...next, schedule: currentDefault.schedule };
+        changed = true;
+      }
+    }
+    if (day.id === '16' || day.id === '18' || day.id === '21' || day.id === '22' || day.id === '23' || day.id === '24' || day.id === '25') {
+      const defaultSteps = new Map((currentDefault.guideSteps || []).map(step => [step.id, step]));
+      const refreshedIds = new Set(day.id === '16' ? ['kawayu-shingu', 'shingu-katsuura', 'nachisan-bus'] : day.id === '18' ? ['kiyomizu-access'] : day.id === '21' ? ['takayama-hotel'] : day.id === '22' ? ['tokyo-hotel'] : day.id === '23' ? ['yanaka-start'] : day.id === '24' ? ['meiji', 'shinjuku-return'] : ['airport-return', 'airport-route']);
+      const refreshedSteps = (next.guideSteps || []).map(step => {
+        const latest = defaultSteps.get(step.id);
+        if (!latest || !refreshedIds.has(step.id)) return step;
+        const oldVague = /aún no está identificado|dirección aún pendiente|dependerá de la dirección|Pendiente decidir aeropuerto|HND y NRT son distintos|Cuando se confirme el hotel|Confirma en la tabla oficial|Desde Shingu usa el tren JR|bus\/taxi\/recorrido urbano por decidir/i.test(step.detail) || day.id === '16' && (step.id === 'kawayu-shingu' && step.detail.startsWith('Desde la parada de Kawayu que indique el hotel') || step.id === 'shingu-katsuura' && step.detail.startsWith('En Shingu Station sigue los carteles JR') || step.id === 'nachisan-bus' && step.detail.startsWith('Desde Kii-Katsuura Station sal por la salida'));
+        return oldVague ? latest : step;
+      });
+      const addedSteps = day.id === '16' ? (currentDefault.guideSteps || []).filter(step => !refreshedSteps.some(existing => existing.id === step.id)) : [];
+      if (addedSteps.length || refreshedSteps.some((step, i) => step !== next.guideSteps?.[i])) {
+        next = { ...next, guideSteps: [...refreshedSteps, ...addedSteps] };
+        changed = true;
+      }
+    }
+    if (day.id === '25') {
+      const defaultDeparture = currentDefault.places.find(place => place.id === 'departure');
+      const refreshedPlaces = next.places.map(place => place.id === 'departure' && /Pendiente decidir|Pendiente aeropuerto/i.test(place.detail) && defaultDeparture ? { ...place, ...defaultDeparture } : place);
+      const oldSchedule = next.schedule.join('|').includes('Facturación') && next.schedule.join('|').includes('Vuelo de regreso');
+      if (refreshedPlaces.some((place, i) => place !== next.places[i]) || oldSchedule) {
+        next = { ...next, places: refreshedPlaces, schedule: oldSchedule ? currentDefault.schedule : next.schedule, notes: [...next.notes.filter(note => !note.startsWith('No programar visitas turísticas')), ...currentDefault.notes.filter(note => !next.notes.includes(note))] };
+        changed = true;
+      }
     }
     return next;
   });
-  const preparation = trip.preparation === undefined ? defaultTrip.preparation : trip.preparation;
+  const hotels = trip.hotels.map(hotel => {
+    const latest = defaultTrip.hotels.find(item => item.id === hotel.id);
+    if (!latest) return hotel;
+    const isOldPlaceholder = hotel.id === 'takayama' && hotel.name === 'Alojamiento de Takayama' || hotel.id === 'tokyo' && hotel.name === 'Alojamiento de Tokio';
+    return isOldPlaceholder ? { ...latest, dates: hotel.dates || latest.dates } : hotel;
+  });
+  if (hotels.some((hotel, index) => hotel !== trip.hotels[index])) changed = true;
+  const existingProviders = trip.providers || [];
+  const knownProviderNames = new Set(existingProviders.map(provider => provider.name));
+  const providers = [...existingProviders, ...defaultTrip.providers.filter(provider => !knownProviderNames.has(provider.name))];
+  if (providers.length !== existingProviders.length) changed = true;
+  const defaultTasks = new Map((defaultTrip.preparation || []).map(task => [task.id, task]));
+  let preparationChanged = trip.preparation === undefined;
+  let preparation: NonNullable<Trip['preparation']> = trip.preparation === undefined ? (defaultTrip.preparation || []) : trip.preparation.map(task => {
+    const latest = defaultTasks.get(task.id);
+    if (!latest) return task;
+    const obsolete = task.id === 'lodging-details' && /no identifica todavía|aún no|cuando tengáis/i.test(task.detail) || task.id === 'flight-details' && /no fija Haneda|cuando tengáis el billete/i.test(task.detail) || task.id === 'kuroshio-out' && task.detail.startsWith('Elegir un Kuroshio compatible') || task.id === 'kumano-day15' && task.detail.startsWith('La caminata comienza en la parada Hosshinmon-oji');
+    if (obsolete) { preparationChanged = true; return { ...latest, status: task.status }; }
+    return task;
+  });
+  const existingPreparationIds = new Set(preparation.map(task => task.id));
+  const addedPreparation = (defaultTrip.preparation || []).filter(task => !existingPreparationIds.has(task.id));
+  if (addedPreparation.length) { preparation = [...preparation, ...addedPreparation]; preparationChanged = true; }
   const manners = trip.manners === undefined ? defaultTrip.manners : trip.manners;
-  if (preparation !== trip.preparation || manners !== trip.manners) changed = true;
-  return changed ? { ...trip, days, preparation, manners } : trip;
+  if (preparationChanged || manners !== trip.manners) changed = true;
+  return changed ? { ...trip, days, hotels, providers, preparation, manners, updatedAt: new Date().toISOString() } : trip;
 }
 
 export function useTrip() {
@@ -123,3 +240,4 @@ export function useTrip() {
 }
 
 export const stamp = (trip: Trip): Trip => ({ ...trip, updatedAt: new Date().toISOString() });
+
