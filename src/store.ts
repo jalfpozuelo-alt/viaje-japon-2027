@@ -161,6 +161,11 @@ function migrateLegacyCoverImages(trip: Trip): Trip {
         next = { ...next, schedule: currentDefault.schedule };
         changed = true;
       }
+      const dualPilgrimNote = currentDefault.notes.find(note => note.startsWith('Dual Pilgrim — sellos y trámite:'));
+      if (dualPilgrimNote && !next.notes.some(note => note.startsWith('Dual Pilgrim — sellos y trámite:'))) {
+        next = { ...next, notes: [...next.notes, dualPilgrimNote] };
+        changed = true;
+      }
     }
     if (day.id === '16' || day.id === '18' || day.id === '21' || day.id === '22' || day.id === '23' || day.id === '24' || day.id === '25') {
       const defaultSteps = new Map((currentDefault.guideSteps || []).map(step => [step.id, step]));
